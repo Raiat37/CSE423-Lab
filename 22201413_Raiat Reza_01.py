@@ -159,118 +159,123 @@ def main():
 main()
 
 
+
+
+
+
 #Task 2 : The Amazing Box
 
-# from OpenGL.GL import *
-# from OpenGL.GLUT import *
-# from OpenGL.GLU import *
-# import random
+from OpenGL.GL import *
+from OpenGL.GLUT import *
+from OpenGL.GLU import *
+import random
 
-# window_width = 500
-# window_height = 500
+window_width = 500
+window_height = 500
 
-# points = []
-# blinking = False
-# frozen = False
-# blink_state = True
-# blink_counter = 0
-# blink_interval = 20
-# speed_multiplier = 1.0
+points = []
+blinking = False
+frozen = False
+blink_state = True
+blink_counter = 0
+blink_interval = 20
+speed_multiplier = 1.0
 
-# class MovingPoint:
-#     def __init__(self, x, y):
-#         self.x = x
-#         self.y = y
-#         self.size = random.randint(3, 6)
-#         self.color = (random.random(), random.random(), random.random())
-#         self.dx = random.choice([-1, 1]) * random.uniform(1, 3)
-#         self.dy = random.choice([-1, 1]) * random.uniform(1, 3)
+class MovingPoint:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.size = random.randint(3, 6)
+        self.color = (random.random(), random.random(), random.random())
+        self.dx = random.choice([-1, 1]) * random.uniform(1, 3)
+        self.dy = random.choice([-1, 1]) * random.uniform(1, 3)
 
-#     def move(self):
-#         self.x += self.dx * speed_multiplier
-#         self.y += self.dy * speed_multiplier
-#         if self.x <= 0 or self.x >= window_width:
-#             self.dx *= -1
-#         if self.y <= 0 or self.y >= window_height:
-#             self.dy *= -1
+    def move(self):
+        self.x += self.dx * speed_multiplier
+        self.y += self.dy * speed_multiplier
+        if self.x <= 0 or self.x >= window_width:
+            self.dx *= -1
+        if self.y <= 0 or self.y >= window_height:
+            self.dy *= -1
 
-#     def draw(self):
-#         glColor3f(*self.color)
-#         glPointSize(self.size)
-#         glBegin(GL_POINTS)
-#         glVertex2f(self.x, self.y)
-#         glEnd()
+    def draw(self):
+        glColor3f(*self.color)
+        glPointSize(self.size)
+        glBegin(GL_POINTS)
+        glVertex2f(self.x, self.y)
+        glEnd()
 
-# def display():
-#     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-#     glLoadIdentity()
-#     if not blinking or blink_state:
-#         for p in points:
-#             p.draw()
-#     glutSwapBuffers()
+def display():
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    glLoadIdentity()
+    if not blinking or blink_state:
+        for p in points:
+            p.draw()
+    glutSwapBuffers()
 
-# def keyboard(key, x, y):
-#     global blinking, frozen
-#     if key == b' ':
-#         frozen = not frozen
-#         if frozen:
-#             print("Frozen")
-#         else:
-#             print("Unfrozen")
+def keyboard(key, x, y):
+    global blinking, frozen
+    if key == b' ':
+        frozen = not frozen
+        if frozen:
+            print("Frozen")
+        else:
+            print("Unfrozen")
 
-# def special(key, x, y):
-#     global speed_multiplier
-#     if key == GLUT_KEY_UP:
-#         speed_multiplier *= 1.5
-#         print("Speed increased:", round(speed_multiplier, 2))
-#     elif key == GLUT_KEY_DOWN:
-#         if speed_multiplier > 0.1:
-#             speed_multiplier /= 1.5
-#         if speed_multiplier < 0.1:
-#             speed_multiplier = 0.1
-#         print("Speed decreased:", round(speed_multiplier, 2))
+def special(key, x, y):
+    global speed_multiplier
+    if key == GLUT_KEY_UP:
+        speed_multiplier *= 1.5
+        print("Speed increased:", round(speed_multiplier, 2))
+    elif key == GLUT_KEY_DOWN:
+        if speed_multiplier > 0.1:
+            speed_multiplier /= 1.5
+        if speed_multiplier < 0.1:
+            speed_multiplier = 0.1
+        print("Speed decreased:", round(speed_multiplier, 2))
 
-# def mouse(button, state, x, y):
-#     global blinking
-#     if state == GLUT_DOWN:
-#         if button == GLUT_RIGHT_BUTTON:
-#             points.append(MovingPoint(x, y))
-#             print(f"Point added at ({x},{y})")
-#         elif button == GLUT_LEFT_BUTTON:
-#             blinking = not blinking
-#             print("Blinking toggled:", blinking)
-#     glutPostRedisplay()
+def mouse(button, state, x, y):
+    global blinking
+    if state == GLUT_DOWN:
+        if button == GLUT_RIGHT_BUTTON:
+            points.append(MovingPoint(x, y))
+            print(f"Point added at ({x},{y})")
+        elif button == GLUT_LEFT_BUTTON:
+            blinking = not blinking
+            print("Blinking toggled:", blinking)
+    glutPostRedisplay()
 
-# def init():
-#     glClearColor(0, 0, 0, 0)
-#     glMatrixMode(GL_PROJECTION)
-#     glLoadIdentity()
-#     glOrtho(0, window_width, window_height, 0, -1, 1)
-#     glMatrixMode(GL_MODELVIEW)
+def init():
+    glClearColor(0, 0, 0, 0)
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    glOrtho(0, window_width, window_height, 0, -1, 1)
+    glMatrixMode(GL_MODELVIEW)
 
-# def animate():
-#     global blink_state, blink_counter
-#     if not frozen:
-#         if blinking:
-#             blink_counter += 1
-#             if blink_counter >= blink_interval:
-#                 blink_state = not blink_state
-#                 blink_counter = 0
-#         for p in points:
-#             p.move()
-#     glutPostRedisplay()
+def animate():
+    global blink_state, blink_counter
+    if not frozen:
+        if blinking:
+            blink_counter += 1
+            if blink_counter >= blink_interval:
+                blink_state = not blink_state
+                blink_counter = 0
+        for p in points:
+            p.move()
+    glutPostRedisplay()
 
-# def main():
-#     glutInit()
-#     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
-#     glutInitWindowSize(window_width, window_height)
-#     glutInitWindowPosition(100, 100)
-#     glutCreateWindow(b"Task 2: The Amazing Box")
-#     init()
-#     glutDisplayFunc(display)
-#     glutIdleFunc(animate)
-#     glutKeyboardFunc(keyboard)
-#     glutSpecialFunc(special)
-#     glutMouseFunc(mouse)
-#     glutMainLoop()
-# main()
+def main():
+    glutInit()
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
+    glutInitWindowSize(window_width, window_height)
+    glutInitWindowPosition(100, 100)
+    glutCreateWindow(b"Task 2: The Amazing Box")
+    init()
+    glutDisplayFunc(display)
+    glutIdleFunc(animate)
+    glutKeyboardFunc(keyboard)
+    glutSpecialFunc(special)
+    glutMouseFunc(mouse)
+    glutMainLoop()
+
+main()
